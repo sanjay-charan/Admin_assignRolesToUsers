@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;

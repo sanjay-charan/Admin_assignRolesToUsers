@@ -28,10 +28,7 @@ public class CounterGeneratorService {
 		Update update = new Update().inc("count", 1);
 		
 		Counter currentCount=mongoOperations.findAndModify(q,update,options().returnNew(true).upsert(true),Counter.class);
-//		Counter test=new Counter();
-//		test.setId("Test");
-//		test.setCount(2);
-//		mongoOperations.insert(test);
+
 		return Objects.isNull(currentCount)?1:currentCount.getCount();
 		
 		
