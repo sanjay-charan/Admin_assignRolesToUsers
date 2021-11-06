@@ -3,10 +3,13 @@ package com.example.demo.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Document(collection = "employee")
 public class Employee {
