@@ -9,7 +9,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.service.EmpService;
 import com.example.demo.service.JwtTokenUtil;
 import com.example.demo.service.MyUsersDetailsService;
 

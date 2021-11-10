@@ -15,8 +15,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 
-import com.example.demo.model.Employee;
-import com.example.demo.service.EmpService;
 
 @SpringBootTest
 
@@ -38,28 +36,28 @@ class EmpCrudApplicationTests {
 //		    new MongoTemplate(new SimpleMongoClientDbFactory("mongodb://localhost/test"))
 //		);
 	
-	@Autowired
-	private EmpService service;
-	
-	
-	@Test
-	public void getUsersTest() {
-		when(mongoTemplate.findAll(Employee.class)).thenReturn(Stream
-				.of(new Employee("Danile", 31))
-				.collect(Collectors.toList()));	
-		
-		assertEquals(1,service.getAllEmployees().size());
-		
-	}
-
-	@Test
-	public void addNumTest() {
-		
-		
-		assertEquals(8,service.addNum(4,4));
-		
-		
-		
-	}
+//	@Autowired
+//	private EmpService service;
+//	
+//	
+//	@Test
+//	public void getUsersTest() {
+//		when(mongoTemplate.findAll(Employee.class)).thenReturn(Stream
+//				.of(new Employee("Danile", 31))
+//				.collect(Collectors.toList()));	
+//		
+//		assertEquals(1,service.getAllEmployees().size());
+//		
+//	}
+//
+//	@Test
+//	public void addNumTest() {
+//		
+//		
+//		assertEquals(8,service.addNum(4,4));
+//		
+//		
+//		
+//	}
 
 }

@@ -17,8 +17,6 @@ import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.Counter;
-import com.example.demo.model.Employee;
 import com.example.demo.model.FileModel;
 import com.example.demo.model.FileSubDocument;
 import com.mongodb.BasicDBObject;
