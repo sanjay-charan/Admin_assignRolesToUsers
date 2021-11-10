@@ -77,12 +77,15 @@ public class FileService {
 	}
 	
 	public FileModel getFileByAssetId(String defect_id, String asset_id) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("defect_id").is(defect_id).and("filesubdocument")
-				.elemMatch(Criteria.where("asset_id").is(asset_id)));
+ 		Query query = new Query();
+//		query.addCriteria(Criteria.where("defect_id").is(defect_id).and("filesubdocument")
+//				.elemMatch(Criteria.where("asset_id").is(asset_id)));
+ 		
+ 		query.addCriteria(Criteria.where("defect_id").is(defect_id));		
+ 		query.addCriteria(Criteria.where("filesubdocument").elemMatch(Criteria.where("asset_id").is(asset_id)));
+ 	                    
 
-
-		FileModel reqEntity = mongoOperations.findOne(query, FileModel.class);
+		FileModel reqEntity = mongoTemplate.findOne(query, FileModel.class);
 		return reqEntity;
 	}
 

@@ -1,27 +1,22 @@
 package com.example.demo.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -29,19 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.model.Employee;
 import com.example.demo.model.FileModel;
 import com.example.demo.model.FileSubDocument;
 import com.example.demo.service.FileService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
 @RestController
 @RequestMapping("/file")
 public class FileController {
+	
+	
+	
+	
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -51,11 +48,22 @@ public class FileController {
 	
 	@GetMapping("/getallfiles")
 	public List<FileModel> getAllFiles(){
+		LOGGER.info("IN GET ALL FILES");
+		
 		return fileservice.getAllFiles();
 	}
 	
+	
+	
+	/**
+	 * Method to get all files by defect_id
+	 *
+	 * @param defect_id as HashMap.
+	 * @return FileModel with respective status and information.
+	 */
 	@GetMapping("/getfilebyid")
 	public FileModel getFileById(@RequestBody HashMap<String, String> dataHashMap) {
+		
 		return fileservice.getFileById(dataHashMap.get("defect_id"));
 	}
 	

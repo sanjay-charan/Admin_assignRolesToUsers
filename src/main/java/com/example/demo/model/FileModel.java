@@ -21,9 +21,9 @@ import lombok.Setter;
 public class FileModel {
 //	@Id
 	private String defect_id;
-	
 	private List<FileSubDocument> filesubdocument;
 
+	
 	public String getDefect_id() {
 		return defect_id;
 	}
