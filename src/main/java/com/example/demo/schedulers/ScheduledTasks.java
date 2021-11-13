@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.model.FileCount;
-import com.example.demo.service.DashService;
+import com.example.demo.model.filemanagement.FileCount;
+import com.example.demo.service.filemangement.DashService;
 
 @Component
 public class ScheduledTasks {
@@ -21,7 +21,7 @@ public class ScheduledTasks {
     private DashService dashservice;
     
     
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 60*1000)
     public void scheduleTaskWithFixedRate() {
     	
     	long files_count = dashservice.countFiles();
