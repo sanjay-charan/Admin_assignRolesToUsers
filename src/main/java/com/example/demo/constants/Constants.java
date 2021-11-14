@@ -31,4 +31,10 @@ public final class Constants {
 
 	public static final String TESTCASE_STATUS_ONHOLD = "Onhold";
 	public static final String TESTCASE_COUNTER_DOCUMENT_SEQUENCE_COLUMN = "seq";
+	
+	
+	//Defects
+	public static final String DEFECT_COLLECTION = "defectInfo";
+	public static final String COMMENT_COLLECTION = "defectComments";
+	public static final String STATUS_COLLECTION = "StatusHistory";
 }

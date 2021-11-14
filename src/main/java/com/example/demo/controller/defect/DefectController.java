@@ -31,7 +31,6 @@ public class DefectController {
 	private DefectService defService;
 	
 	public DefectController(DefectService defService) {
-		System.out.println("Heyy...I got an Defect Service Object");
 		this.defService = defService;
 	}
 	
@@ -43,13 +42,11 @@ public class DefectController {
 	
 	@GetMapping("/display")
 	public List<Defect> getAllDefects(){
-		System.out.println("getAllDefects");
 		return defService.getAllDefects();
 	}
 	
 	@GetMapping("/display/{id}")
 	public Dashboard getDefectById(@PathVariable("id") String id){
-		System.out.println("getAllDefects");
 		return defService.getDefectById(id);
 	}
 	
@@ -60,13 +57,11 @@ public class DefectController {
 	
 	@PutMapping("/update")
 	public String updateDefect(@RequestBody Map<String,String> defect) {
-		System.out.println("updateDefectByID"+defect.get("id"));
 		return defService.updateDefectByID(defect);
 	}
 	
 	@PutMapping("/updateStatus/{id}")
 	public String updateDefectStatus(@PathVariable("id") String id, @RequestBody Map<String,String> defect) {
-		System.out.println("updateStatusByID"+defect.get("id"));
 		return defService.updateDefectStatus(defect);
 	}
 	

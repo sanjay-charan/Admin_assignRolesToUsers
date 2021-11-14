@@ -1,11 +1,12 @@
 package com.example.demo.model.defect;
 
+import com.example.demo.constants.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import com.example.demo.utilities.Timestamp;
 
-@Document(collection = "StatusHistory")
+@Document(collection = Constants.STATUS_COLLECTION)
 public class Status {
 	private String defectId;
 	private Timestamp dateTime;

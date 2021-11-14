@@ -2,7 +2,9 @@ package com.example.demo.model.defect;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "defectInfo")
+import com.example.demo.constants.Constants;
+
+@Document(collection = Constants.DEFECT_COLLECTION)
 public class Defect {
 	private String id;
 	private String name;

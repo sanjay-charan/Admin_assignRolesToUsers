@@ -2,13 +2,11 @@ package com.example.demo.model.defect;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
+import com.example.demo.constants.Constants;
 import com.example.demo.utilities.Timestamp;
 
-//ABCDEF
-//kjvhbakerbave
 
-@Document(collection = "defectComments")
+@Document(collection = Constants.COMMENT_COLLECTION)
 public class Comments {
 	private Timestamp timestamp;
 	private String userId;
