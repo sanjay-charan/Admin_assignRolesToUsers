@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.example.demo.utilities.Timestamp;
 
+//ABCDEF
+
 @Document(collection = "defectComments")
 public class Comments {
 	private Timestamp timestamp;
