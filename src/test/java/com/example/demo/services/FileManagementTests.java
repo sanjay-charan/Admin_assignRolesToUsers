@@ -1,31 +1,24 @@
-package com.example.demo;
+package com.example.demo.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.example.demo.model.filemanagement.FileCount;
 import com.example.demo.service.filemangement.FileService;
 import com.example.demo.utilities.Cloudinary;
 
 @SpringBootTest
-class EmpCrudApplicationTests {
-
+public class FileManagementTests {
+	
 	@Test
 	void contextLoads() {
 	}
@@ -43,16 +36,25 @@ class EmpCrudApplicationTests {
 
 	@Autowired
 	private FileService service;
-
+	MockMultipartFile file = new MockMultipartFile("file", "hello.txt", MediaType.TEXT_PLAIN_VALUE,
+			"Hello, World!".getBytes());
 
 
 	@Test
 	public void addFileTest() throws IOException {
-		MockMultipartFile file = new MockMultipartFile("file", "hello.txt", MediaType.TEXT_PLAIN_VALUE,
-				"Hello, World!".getBytes());
+		
 		assertEquals("DEF_10", service.addFile(Cloudinary.uploadToCloudinary(file, "DEF_10")).getDefect_id());
 	}
 	
+	
+	
+//	@Test
+//	public void updateFileByIdAndAssetIdTest() throws IOException {
+//		
+//		
+//		assertEquals("DEF_5", service.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, "DEF_5"),"DEF_5","60519e15be0455795b8ef100685a71a1").getDefect_id());
+//		
+//	}
 	@Test
 	public void getAllFilesTest() {
 		assertEquals(6, service.getAllFiles().size());		
@@ -60,8 +62,19 @@ class EmpCrudApplicationTests {
 	
 	@Test
 	public void getFileByIdTest() {
-		assertEquals("DEF_10", service.getFileByAssetId( "DEF_10" , "4b1ec76e678811e39eaf9eadf9532301").getDefect_id());
 		
+		assertEquals("DEF_10", service.getFileById( "DEF_10").getDefect_id());
+		
+	}
+	
+	@Test
+	public void getFileByAssetIdTest() {
+		assertEquals("DEF_2", service.getFileByAssetId( "DEF_3" ,"9990e0fb5df653797045b13cdec03157").getDefect_id());
+	}
+	
+	@Test
+	public void deleteAllFilesTest() {
+		service.deleteAllFiles( "DEF_2");
 	}
 	
 	@Test
@@ -72,8 +85,6 @@ class EmpCrudApplicationTests {
 	
 	@Test
 	void uploadToCloudinaryTest() throws IOException {
-		MockMultipartFile file = new MockMultipartFile("file", "hello.txt", MediaType.TEXT_PLAIN_VALUE,
-				"Hello, World!".getBytes());
 		
 		assertEquals("DEF_10",Cloudinary.uploadToCloudinary(file, "DEF_10").getDefect_id());
 		

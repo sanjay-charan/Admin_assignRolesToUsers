@@ -21,7 +21,7 @@ public class ScheduledTasks {
     private DashService dashservice;
     
     
-    @Scheduled(fixedRate = 60*1000)
+    @Scheduled(fixedRate = 60*60*1000)
     public void scheduleTaskWithFixedRate() {
     	
     	long files_count = dashservice.countFiles();
