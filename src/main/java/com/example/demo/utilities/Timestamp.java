@@ -3,14 +3,21 @@ package com.example.demo.utilities;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.demo.service.defect.ValidationService;
+
 public class Timestamp {
 	private int date;
 	private int month;
 	private int year;
 	private int hour;
 	private int min;
+	Logger logger = LoggerFactory.getLogger(ValidationService.class);
 	
 	public Timestamp() {
+		logger.info("Constructor to TimeStamp class initiated");
 		LocalDateTime d = LocalDateTime.now();
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("dd");
 		this.date = Integer.parseInt((d.format(f)));

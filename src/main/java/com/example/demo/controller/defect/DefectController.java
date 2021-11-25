@@ -45,6 +45,11 @@ public class DefectController {
 		return defService.getAllDefects();
 	}
 	
+	@GetMapping("displayprojectdef/{pid}")
+	public List<Defect> getProjectDefects(@PathVariable("pid") String pid){
+		return defService.getDefectsByProjectId(pid);
+	}
+	
 	@GetMapping("/display/{id}")
 	public Dashboard getDefectById(@PathVariable("id") String id){
 		return defService.getDefectById(id);
@@ -60,7 +65,7 @@ public class DefectController {
 		return defService.updateDefectByID(defect);
 	}
 	
-	@PutMapping("/updateStatus/{id}")
+	@PutMapping("/updateStatus")
 	public String updateDefectStatus(@PathVariable("id") String id, @RequestBody Map<String,String> defect) {
 		return defService.updateDefectStatus(defect);
 	}
