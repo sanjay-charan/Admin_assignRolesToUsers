@@ -57,7 +57,7 @@ public class FileManagementTests {
 //	}
 	@Test
 	public void getAllFilesTest() {
-		assertEquals(6, service.getAllFiles().size());		
+		assertEquals(5, service.getAllFiles().size());		
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class FileManagementTests {
 	
 	@Test
 	public void getFileByAssetIdTest() {
-		assertEquals("DEF_2", service.getFileByAssetId( "DEF_3" ,"9990e0fb5df653797045b13cdec03157").getDefect_id());
+		assertEquals("DEF_3", service.getFileByAssetId( "DEF_3" ,"9990e0fb5df653797045b13cdec03157").getDefect_id());
 	}
 	
 	@Test
