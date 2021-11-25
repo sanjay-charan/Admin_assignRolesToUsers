@@ -2,16 +2,16 @@ package com.example.demo.model.filemanagement;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
+//import lombok.Getter;
+//import lombok.Setter;
 
 @JsonIgnoreProperties
-@Data
-@AllArgsConstructor
-@Getter
-@Setter
+//@Data
+//@AllArgsConstructor
+//@Getter
+//@Setter
 public class FileSubDocument {
 
 	private String asset_id;

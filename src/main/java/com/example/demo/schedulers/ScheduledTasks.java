@@ -29,7 +29,7 @@ public class ScheduledTasks {
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
     	LocalDateTime now = LocalDateTime.now();  
     	
-    	entry.setFiles_count(files_count);
+    	entry.setFilesCount(files_count);
     	entry.setTime(dtf.format(now));
     	
         logger.info(dashservice.addEntry(entry) );
