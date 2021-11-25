@@ -20,14 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.model.filemanagement.FileModel;
 import com.example.demo.service.filemangement.FileService;
 import com.example.demo.utilities.Cloudinary;
-
+import com.mongodb.MongoCommandException;
+import com.mongodb.MongoQueryException;
 
 @RestController
 @RequestMapping("/api/v1/file")
 public class FileController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
-
 
 	@Autowired
 	private FileService fileservice;
@@ -67,8 +67,8 @@ public class FileController {
 	@PostMapping(value = "/updatefilebyid", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public FileModel updateFileByIdAndAssetId(@RequestPart("file") MultipartFile file,
 			@RequestPart("defect_id") String defect_id, @RequestPart("asset_id") String asset_id) throws IOException {
-	
-		return fileservice.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, defect_id), defect_id, asset_id);
+		return fileservice.updateFileByIdAndAssetId(Cloudinary.uploadToCloudinary(file, defect_id), defect_id,
+				asset_id);
 
 	}
 

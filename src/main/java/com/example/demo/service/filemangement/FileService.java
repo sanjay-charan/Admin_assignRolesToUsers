@@ -12,9 +12,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constants.Constants;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.filemanagement.FileModel;
 import com.mongodb.BasicDBObject;
+import com.mongodb.MongoCommandException;
+import com.mongodb.MongoException;
+import com.mongodb.MongoQueryException;
 
 @Service
 public class FileService {
@@ -31,37 +35,38 @@ public class FileService {
 
 	public FileModel addFile(FileModel filemodel) {
 
-		if (filemodel.getFilesubdocument().size() == 0) {
+		if (filemodel.getFilesubdocument().isEmpty()) {
 			throw new BadRequestException("Could not read any file");
 		} else {
 
-			Update update = new Update().addToSet("filesubdocument", filemodel.getFilesubdocument().get(0));
+			Update update = new Update().addToSet(Constants.FILE_SUB_DOCUMENT, filemodel.getFilesubdocument().get(0));
 
 			Query q = new Query();
-			q.addCriteria(Criteria.where("defect_id").is(filemodel.getDefect_id()));
+			q.addCriteria(Criteria.where(Constants.DEFECT_ID).is(filemodel.getDefect_id()));
 
-			FileModel addedEntity = mongoOperations.findAndModify(q, update, options().returnNew(true).upsert(true),
-					FileModel.class);
+			return mongoOperations.findAndModify(q, update, options().returnNew(true).upsert(true), FileModel.class);
 
-			return addedEntity;
 		}
 	}
 
 	public FileModel updateFileByIdAndAssetId(FileModel filemodel, String defect_id, String asset_id) {
+		try {
+			if (filemodel.getFilesubdocument().isEmpty()) {
+				throw new BadRequestException("Could not read any file");
+			} else {
 
-		if (filemodel.getFilesubdocument().size() == 0) {
-			throw new BadRequestException("Could not read any file");
-		} else {
+				Query query = new Query();
+				query.addCriteria(Criteria.where(Constants.DEFECT_ID).is(defect_id).and("filesubdocument")
+						.elemMatch(Criteria.where(Constants.ASSET_ID).is(asset_id)));
 
-			Query query = new Query();
-			query.addCriteria(Criteria.where("defect_id").is(defect_id).and("filesubdocument")
-					.elemMatch(Criteria.where("asset_id").is(asset_id)));
+				Update update = new Update().set("filesubdocument.$", filemodel.getFilesubdocument().get(0));
 
-			Update update = new Update().set("filesubdocument.$", filemodel.getFilesubdocument().get(0));
+				return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(true),
+						FileModel.class);
+			}
+		} catch (MongoCommandException e) {
+			throw new MongoQueryException(e.getServerAddress(), e.getErrorCode(), e.getErrorMessage());
 
-			FileModel addedEntity = mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(true),
-					FileModel.class);
-			return addedEntity;
 		}
 
 	}
@@ -74,24 +79,24 @@ public class FileService {
 	public FileModel getFileById(String defect_id) {
 
 		Query q = new Query();
-		q.addCriteria(Criteria.where("defect_id").is(defect_id));
+		q.addCriteria(Criteria.where(Constants.DEFECT_ID).is(defect_id));
 
 		return mongoTemplate.findOne(q, FileModel.class);
 	}
 
 	public FileModel getFileByAssetId(String defect_id, String asset_id) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("defect_id").is(defect_id));
-		query.addCriteria(Criteria.where("filesubdocument").elemMatch(Criteria.where("asset_id").is(asset_id)));
+		query.addCriteria(Criteria.where(Constants.DEFECT_ID).is(defect_id));
+		query.addCriteria(
+				Criteria.where(Constants.FILE_SUB_DOCUMENT).elemMatch(Criteria.where(Constants.ASSET_ID).is(asset_id)));
 
-		FileModel reqEntity = mongoTemplate.findOne(query, FileModel.class);
-		return reqEntity;
+		return mongoTemplate.findOne(query, FileModel.class);
 	}
 
 	public String deleteAllFiles(String defect_id) {
 
 		Query q = new Query();
-		q.addCriteria(Criteria.where("defect_id").is(defect_id));
+		q.addCriteria(Criteria.where(Constants.DEFECT_ID).is(defect_id));
 		FileModel deletedEntity = mongoTemplate.findAndRemove(q, FileModel.class);
 
 		return (deletedEntity != null) ? "FILE WITH" + deletedEntity.getDefect_id() + " deleted from the database"
@@ -102,9 +107,9 @@ public class FileService {
 	public String deleteFileByAssetId(String defect_id, String asset_id) {
 
 		Query query = new Query();
-		query.addCriteria(Criteria.where("defect_id").is(defect_id));
+		query.addCriteria(Criteria.where(Constants.DEFECT_ID).is(defect_id));
 
-		Update update = new Update().pull("filesubdocument", new BasicDBObject("asset_id", asset_id));
+		Update update = new Update().pull(Constants.FILE_SUB_DOCUMENT, new BasicDBObject(Constants.ASSET_ID, asset_id));
 
 		mongoOperations.upsert(query, update, FileModel.class);
 		return "FILE WITH defect_id" + defect_id + " is Removed";
