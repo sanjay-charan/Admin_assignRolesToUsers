@@ -66,6 +66,15 @@ public class DefectService {
 		return a;
 	}
 	
+	public long getDefectCount() {
+		Query q = new Query();
+		q.addCriteria(Criteria.where("status").ne("Closed"));
+		return mongoTemplate.count(q, Defect.class);
+		
+	}
+	
+	
+	
 	public List<Defect> getDefectsByProjectId(String pid){
 		valSer.validateProjectId(pid);
 		Query q = new Query();
@@ -136,4 +145,11 @@ public class DefectService {
 		logger.info("Information retrieval for dashboard successful");
 		return d;
 	}
+	
+	
+	
+
+	
+	
+	
 }

@@ -29,8 +29,7 @@ public class DashService {
 	public String addEntry(FileCount entry) {
 		mongoTemplate.save(entry);
 		return entry.getTime()+" "+ entry.getFilesCount()+" added";		
-		
-		
+
 		
 	}
 }
