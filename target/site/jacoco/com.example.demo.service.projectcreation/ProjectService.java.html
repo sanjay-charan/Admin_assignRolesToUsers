@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EmpCrud</a> &gt; <a href="index.source.html" class="el_package">com.example.demo.service.projectcreation</a> &gt; <span class="el_source">ProjectService.java</span></div><h1>ProjectService.java</h1><pre class="source lang-java linenums">package com.example.demo.service.projectcreation;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.projectcreation.Counter;
+import com.example.demo.model.projectcreation.ProjectModel;
+import com.example.demo.model.projectcreation.RequirementModel;
+import com.example.demo.constants.Constants;
+import com.example.demo.utilities.ProjectUtility;
+
+@Service
+public class ProjectService {
+private MongoTemplate mongoTemplate;
+	
+	@Autowired
+	private MongoOperations mongoOperation;
+
+	@Autowired
+<span class="fc" id="L28">	public ProjectService(MongoTemplate mongoTemplate) {</span>
+		
+<span class="fc" id="L30">		this.mongoTemplate = mongoTemplate;</span>
+<span class="fc" id="L31">	}</span>
+	
+	
+	public String addProject(ProjectModel projectModel)
+	{
+<span class="nc bnc" id="L36" title="All 2 branches missed.">		if(mongoTemplate.insert(projectModel)!=null)</span>
+		{
+<span class="nc" id="L38">			return &quot;Project Created with ID &quot;+projectModel.getId();</span>
+		}
+		else {
+<span class="nc" id="L41">			return &quot;Project Not Created&quot;;</span>
+		}
+		
+	}
+	
+	public List&lt;ProjectModel&gt; getAllProjects()
+	{
+<span class="nc" id="L48">		return   mongoTemplate.findAll(ProjectModel.class);</span>
+	}
+	public ProjectModel getByProjectId(String id) {
+	
+<span class="nc" id="L52">		return mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(&quot;id&quot;, id), ProjectModel.class);</span>
+	}
+	
+	public String updateProject(ProjectModel projectModel,String id) {
+<span class="nc" id="L56">		ProjectModel requestedProject=getByProjectId(id);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">		if(projectModel.getName()!=null)</span>
+		{
+<span class="nc" id="L59">			requestedProject.setName(projectModel.getName());</span>
+		}
+<span class="nc bnc" id="L61" title="All 2 branches missed.">		if(projectModel.getDescription()!=null)</span>
+		{
+<span class="nc" id="L63">			requestedProject.setDescription(projectModel.getDescription());</span>
+		}
+<span class="nc bnc" id="L65" title="All 2 branches missed.">		if(projectModel.getStartDate()!=null)</span>
+		{
+<span class="nc" id="L67">			requestedProject.setStartDate(projectModel.getStartDate());</span>
+		}
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		if(projectModel.getEndDate()!=null)</span>
+		{
+<span class="nc" id="L71">			requestedProject.setEndDate(projectModel.getEndDate());</span>
+		}
+<span class="nc bnc" id="L73" title="All 2 branches missed.">		if(projectModel.getTargetedRelease()!=null)</span>
+		{
+<span class="nc" id="L75">			requestedProject.setTargetedRelease(projectModel.getTargetedRelease());</span>
+		}
+<span class="nc" id="L77">		requestedProject.addUpdateDate();</span>
+		 
+<span class="nc" id="L79">		mongoTemplate.save(requestedProject);</span>
+		
+<span class="nc" id="L81">		return &quot;Project &quot;+requestedProject.getId()+&quot; Updated&quot;;</span>
+			
+		
+	}
+
+	
+	public Counter uniqueValue(String key)
+	{
+		 
+<span class="nc" id="L90">		 Update update = new Update();</span>
+<span class="nc" id="L91">		  update.inc(Constants.PROJECT_COUNTER_DOCUMENT_SEQUENCE_COLUMN, 1);</span>
+<span class="nc" id="L92">		  FindAndModifyOptions options = new FindAndModifyOptions();</span>
+<span class="nc" id="L93">		  options.returnNew(true).upsert(true);</span>
+<span class="nc" id="L94">		  Counter counter= mongoOperation.findAndModify(ProjectUtility.getQueryByKeyValue(&quot;_id&quot;, key), update, options, Counter.class);</span>
+<span class="nc" id="L95">		  counter.addRequirementCount();</span>
+		  
+<span class="nc" id="L97">		  mongoTemplate.save(counter);</span>
+
+<span class="nc" id="L99">		return counter;</span>
+		
+	}
+	public ProjectModel setRequirementCount(ProjectModel projectModel,Counter counter)
+	{
+<span class="nc" id="L104">		 List&lt;RequirementModel&gt; requirements =projectModel.getRequirements();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		for(int reqIndex=0 ;reqIndex&lt;projectModel.getRequirements().size();reqIndex++)</span>
+		{
+<span class="nc" id="L107">			RequirementModel tempRequirement=requirements.get(reqIndex);</span>
+<span class="nc" id="L108">			tempRequirement.setId(Constants.REQUIREMENT_PREFIX+String.valueOf(reqIndex+1));</span>
+<span class="nc" id="L109">			requirements.set(reqIndex,tempRequirement);</span>
+		}
+<span class="nc" id="L111">		counter.setRequirementCountByIndex(counter.getSeq()-1,counter.getRequirementCounter().get(counter.getSeq()-1)+projectModel.getRequirements().size() );</span>
+		
+<span class="nc" id="L113">		mongoTemplate.save(counter);</span>
+
+<span class="nc" id="L115">		return projectModel;</span>
+	}
+
+	public String addRequirement(RequirementModel requirementModel, String id) {
+		
+<span class="nc" id="L120">		ProjectModel projectModel=getByProjectId(id);</span>
+		
+<span class="nc" id="L122">		 Counter counter=mongoTemplate.findOne(ProjectUtility.getQueryByKeyValue(&quot;_id&quot;, Constants.PROJECT_COUNTER_DOCUMENT_ID), Counter.class);</span>
+<span class="nc" id="L123">		 int requirementCounterIndex=Integer.valueOf(id.substring(4));</span>
+<span class="nc" id="L124">		 int value=counter.getRequirementCounter().get(requirementCounterIndex-1);</span>
+<span class="nc" id="L125">		 value+=1;</span>
+<span class="nc" id="L126">		 counter.setRequirementCountByIndex(requirementCounterIndex-1, value);</span>
+<span class="nc" id="L127">		 requirementModel.setId(Constants.REQUIREMENT_PREFIX+String.valueOf(value));</span>
+<span class="nc" id="L128">		 projectModel.addRequirements(requirementModel);</span>
+<span class="nc" id="L129">		 mongoTemplate.save(projectModel);</span>
+<span class="nc" id="L130">		 mongoTemplate.save(counter);</span>
+		 
+<span class="nc" id="L132">		return &quot;requirement added&quot;;</span>
+	}
+
+	public String updateRequirement(RequirementModel requirementModel, String id, String rid, boolean remove) {
+
+<span class="nc" id="L137">		ProjectModel projectModel = getByProjectId(id);</span>
+<span class="nc" id="L138">		int requirementIndex = Integer.valueOf(rid.substring(4));</span>
+<span class="nc" id="L139">		RequirementModel requestedRequirement = projectModel.getRequirements().get(requirementIndex - 1);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (remove) {</span>
+<span class="nc" id="L141">			requestedRequirement.setStatus(&quot;Not Required&quot;);</span>
+		} 
+
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (requirementModel.getDescription() != null) {</span>
+<span class="nc" id="L145">			requestedRequirement.setDescription(requirementModel.getDescription());</span>
+		}
+<span class="nc" id="L147">		projectModel.updateRequirementbyIndex(requirementIndex - 1, requestedRequirement);</span>
+
+<span class="nc" id="L149">		mongoTemplate.save(projectModel);</span>
+
+<span class="nc" id="L151">		return &quot;Requirement Updated&quot;;</span>
+	}
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
