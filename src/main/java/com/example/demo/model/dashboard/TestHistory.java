@@ -3,7 +3,6 @@ package com.example.demo.model.dashboard;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "dash_test_history")
-
 public class TestHistory {
 	
 	private String time;

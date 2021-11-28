@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.model.dashboard.DefectHistory;
 import com.example.demo.model.dashboard.PrevDayCount;
+import com.example.demo.model.dashboard.TestHistory;
 import com.example.demo.model.filemanagement.FileCount;
 
 @Service
@@ -23,13 +24,20 @@ public class DashboardService {
 		Update update = new Update().set("prevCount", currDefectCount);
 		mongoTemplate.upsert(q, update, PrevDayCount.class);
 
-		return prevdaycount.getPrevCount();
+		return (prevdaycount != null) ? prevdaycount.getPrevCount() : 0;
 
 	}
 
-	public String addEntry(DefectHistory entry) {
+	public String addEntryToDefectHistory(DefectHistory entry) {
 		mongoTemplate.save(entry);
 		return entry.getTime() + " start " + entry.getDefectCountStartOfDay() + " " + entry.getDefectCountEndOfDay()
+				+ " added";
+
+	}
+
+	public String addEntryToTestHistory(TestHistory entry) {
+		mongoTemplate.save(entry);
+		return entry.getTime() + " start " + entry.getTestCountStartOfDay() + " " + entry.getTestCountEndOfDay()
 				+ " added";
 
 	}
