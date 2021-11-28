@@ -57,6 +57,7 @@ public class ScheduledTasks {
 		entry.setTime(dtf.format(now));
 		entry.setDefectCountStartOfDay(prevDefectCount);
 		entry.setDefectCountEndOfDay(currDefectCount);
+		entry.setDefectClosedCount(defectservice.getClosedDefectCount());
 
 		logger.info(dashboardService.addEntry(entry));
 

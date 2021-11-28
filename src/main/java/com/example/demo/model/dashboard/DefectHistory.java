@@ -8,20 +8,36 @@ public class DefectHistory {
 	private String time;
 	private long defectCountStartOfDay;
 	private long defectCountEndOfDay;
+	private long defectClosedCount;
+	
 	
 	
 	
 	public DefectHistory() {
 		super();
 	}
-	public DefectHistory(String time, long defectCountStartOfDay, long defectCountEndOfDay) {
+	
+	
+	
+	public DefectHistory(String time, long defectCountStartOfDay, long defectCountEndOfDay, long defectClosedCount) {
 		super();
 		this.time = time;
 		this.defectCountStartOfDay = defectCountStartOfDay;
 		this.defectCountEndOfDay = defectCountEndOfDay;
+		this.defectClosedCount = defectClosedCount;
 	}
-	
-	
+
+
+
+	public long getDefectClosedCount() {
+		return defectClosedCount;
+	}
+
+	public void setDefectClosedCount(long defectClosedCount) {
+		this.defectClosedCount = defectClosedCount;
+	}
+
+
 	public String getTime() {
 		return time;
 	}

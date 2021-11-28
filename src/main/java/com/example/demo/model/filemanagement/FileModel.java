@@ -36,7 +36,7 @@ public class FileModel {
 	}
 
 	public FileModel(String defect_id, List<FileSubDocument> filesubdocument) {
-		super();
+//		super();
 		this.defect_id = defect_id;
 		this.filesubdocument = filesubdocument;
 	}
@@ -48,7 +48,6 @@ public class FileModel {
 	public void setFilesubdocument(List<FileSubDocument> filesubdocument) {
 		this.filesubdocument = filesubdocument;
 	}
-
 
 	
 

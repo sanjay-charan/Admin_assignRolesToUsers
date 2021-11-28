@@ -74,6 +74,13 @@ public class DefectService {
 	}
 	
 	
+	public long getClosedDefectCount() {
+		Query q = new Query();
+		q.addCriteria(Criteria.where("status").is("Closed"));
+		return mongoTemplate.count(q, Defect.class);
+		
+	}
+	
 	
 	public List<Defect> getDefectsByProjectId(String pid){
 		valSer.validateProjectId(pid);
