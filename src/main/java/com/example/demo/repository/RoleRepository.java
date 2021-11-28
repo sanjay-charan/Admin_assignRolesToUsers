@@ -9,5 +9,7 @@ import com.example.demo.model.rolemanagement.ERole;
 import com.example.demo.model.rolemanagement.Role;
 
 public interface RoleRepository extends MongoRepository<Role, String>{
-	Optional<Role> findByName(ERole name);
+
+	Role findByName(String roleUser);
+	
 }

@@ -8,11 +8,15 @@ public class Role {
 	
 	@Id
 	private String id;
-	private ERole name;
+	private String name;
 	
 	public Role() {}
 	
-	public Role(ERole name) {
+//	public Role(ERole name) {
+//		this.name=name;
+//	}
+	
+	public Role(String name) {
 		this.name=name;
 	}
 	
@@ -24,7 +28,7 @@ public class Role {
 		this.id=id;
 	}
 	
-	public ERole getName() {
+	public String getName() {
 		return name;
 	}
 }
