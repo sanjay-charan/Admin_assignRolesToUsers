@@ -34,10 +34,10 @@ public class AdminServices {
 		return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(false), User.class);
 	}
 
-//	public User deleteRoleFromUser(String username, String roleRequested) {
-//		
-//		return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(false), User.class);
-//	}
+	public int deleteRoleFromUser(String username, String roleRequested) {
+		
+		return 0;
+	}
 
 	public MessageResponse addNewRole(String rolename) {
 		Role role = new Role(rolename);

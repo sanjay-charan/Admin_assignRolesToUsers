@@ -68,10 +68,10 @@ public class TestController {
 				.ok(adminServices.addRoleToUser(dataHashMap.get("username"), dataHashMap.get("roleRequested")));
 	}
 
-//		@PostMapping("/deleterolefromuser")
-//		public ResponseEntity<?> deleteRoleFromUser(@Valid @RequestBody HashMap<String, String> dataHashMap){
-//			return ResponseEntity.ok(adminServices.deleteRoleFromUser(dataHashMap.get("username"),dataHashMap.get("roleRequested")));
-//		}
+		@PostMapping("/deleterolefromuser")
+		public ResponseEntity<?> deleteRoleFromUser(@Valid @RequestBody HashMap<String, String> dataHashMap){
+			return ResponseEntity.ok(adminServices.deleteRoleFromUser(dataHashMap.get("username"),dataHashMap.get("roleRequested")));
+		}
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/addnewrole")
