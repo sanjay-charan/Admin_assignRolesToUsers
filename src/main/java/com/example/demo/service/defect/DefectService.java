@@ -72,6 +72,22 @@ public class DefectService {
 		return mongoTemplate.count(q, Defect.class);
 		
 	}
+	public List<Defect> getOpenDefects(){
+		Query q = new Query();
+		q.addCriteria(Criteria.where("status").ne("Closed"));
+		List<Defect> a = mongoTemplate.find(q,Defect.class);
+		System.out.print(a);
+		return a;
+	}
+	
+	public List<Defect> getClosedDefects(){
+		Query q = new Query();
+		q.fields().include("id");
+		q.addCriteria(Criteria.where("status").is("Closed"));
+		List<Defect> a = mongoTemplate.find(q,Defect.class);
+		System.out.print(a);
+		return a;
+	}
 	
 	
 	public long getClosedDefectCount() {

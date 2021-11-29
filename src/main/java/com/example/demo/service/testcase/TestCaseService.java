@@ -1,5 +1,6 @@
 package com.example.demo.service.testcase;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.dashboard.IdOnly;
+import com.example.demo.model.defect.Defect;
 import com.example.demo.model.testcase.TestCaseCounter;
 import com.example.demo.model.testcase.TestCaseModel;
 import com.example.demo.constants.Constants;
@@ -31,7 +34,16 @@ public class TestCaseService {
 		return mongoTemplate.count(query, TestCaseModel.class);
 
 	}
-	
+
+	public List<IdOnly> getOpenTests() {
+		Query q = new Query();
+		q.addCriteria(Criteria.where("status").ne("Passed"));
+		q.fields().include("id");
+		List<IdOnly> a = mongoTemplate.find(q, IdOnly.class, Constants.TESTCASE_COLLECTION);
+		System.out.print(a);
+		return a;
+	}
+
 	public long getPassedTestsCount() {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("status").is("Passed"));
