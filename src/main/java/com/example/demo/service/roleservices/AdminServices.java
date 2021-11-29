@@ -2,6 +2,7 @@ package com.example.demo.service.roleservices;
 
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.rolemanagement.Role;
 import com.example.demo.model.rolemanagement.User;
 import com.example.demo.payload.response.MessageResponse;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.result.UpdateResult;
 
 @Service
 public class AdminServices {
@@ -34,9 +37,14 @@ public class AdminServices {
 		return mongoOperations.findAndModify(query, update, options().returnNew(true).upsert(false), User.class);
 	}
 
-	public int deleteRoleFromUser(String username, String roleRequested) {
-		
-		return 0;
+	public MessageResponse deleteRoleFromUser(String username, String roleRequested) {
+		Role role = mongoTemplate.findOne(
+				new Query().addCriteria(Criteria.where("name").is("ROLE_" + roleRequested.toUpperCase())), Role.class);
+		Query query = Query.query(Criteria.where("username").is(username));
+		Query query2 = Query.query(Criteria.where("$id").is(new ObjectId(role.getId())));
+		Update update = new Update().pull("roles", query2);
+		mongoTemplate.updateMulti(query, update, User.class);
+		return new MessageResponse(roleRequested+" Role has been successful removed from the user "+ username);
 	}
 
 	public MessageResponse addNewRole(String rolename) {
