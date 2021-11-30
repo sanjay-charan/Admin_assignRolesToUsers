@@ -31,15 +31,26 @@ public class User {
 	@Size(max = 120)
 	private String password;
 	
+	@NotBlank
+	@Size(min = 10, max = 10)
+	private String phonenumber;
+	
 	@DBRef
 	private Set<Role> roles = new HashSet<>();
 	
 	public User() {}
 	
-	public User(String username, String email, String password) {
+	public User(String username, String password, String phonenumber, String email) {
 		this.username = username;
-		this.email=email;
 		this.password= password;
+		this.phonenumber=phonenumber;
+		this.email=email;
+	}
+
+	public User(String username, String password, String email) {
+		this.username = username;
+		this.password= password;
+		this.email=email;
 	}
 
 	public String getId() {
@@ -80,5 +91,13 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public String getPhonenumber() {
+		return phonenumber;
+	}
+
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
 	}
 }
